@@ -2,10 +2,14 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-@pytest.fixture
-def driver():
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
+
+@pytest.fixture(scope="class")
+def driver():
+    options = webdriver.ChromeOptions()
+    options.add_argument('--ignore-certificate-errors')
+
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     # 可以在这里进行一些共享的配置，例如窗口大小、隐式等待时间等
     driver.maximize_window()
     driver.implicitly_wait(10)
